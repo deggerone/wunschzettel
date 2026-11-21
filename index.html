@@ -105,12 +105,17 @@
 <script>
 /* ===== Hier die sechs Wünsche eintragen ===== */
 const GIFTS = [
-  { title:"Wunsch eins",   text:"Platzhalter: kurze Beschreibung, warum du dir das wünschst.", price:"ca. 30 €",  detail:"Farbe: egal", link:"" },
-  { title:"Wunsch zwei",   text:"Platzhalter: kurze Beschreibung.", price:"ca. 50 €",  detail:"", link:"" },
-  { title:"Wunsch drei",   text:"Platzhalter: kurze Beschreibung.", price:"ca. 20 €",  detail:"Größe: M", link:"" },
-  { title:"Wunsch vier",   text:"Platzhalter: kurze Beschreibung.", price:"ca. 80 €",  detail:"", link:"" },
-  { title:"Wunsch fünf",   text:"Platzhalter: kurze Beschreibung.", price:"ca. 15 €",  detail:"", link:"" },
-  { title:"Wunsch sechs",  text:"Platzhalter: kurze Beschreibung.", price:"",          detail:"", link:"" }
+  { title:"Ein Schuhschrank für uns",
+    text:"Matine und ich wünschen uns gemeinsam einen Schuhschrank für die Wohnung. Wir haben uns schon einen ausgesucht, über den Link unten kommt ihr direkt zu ihm.",
+    detail:"Gemeinsames Geschenk für Matine und mich",
+    link:"" /* LINK HIER EINFÜGEN, z. B. "https://..." */ },
+  { title:"Eine Nacht auf Island",
+    text:"Ich wünsche mir eine Übernachtung auf Island. Über einen finanziellen Zuschuss eurer Wahl würde ich mich sehr freuen. Als kleiner Anhaltspunkt kann ich sagen, dass man so mit 100–200 € gut bedient ist, je nachdem wie viel Luxus man haben möchte.",
+    detail:"", link:"" },
+  { title:"Wunsch drei",  text:"Platzhalter: kurze Beschreibung.", detail:"", link:"" },
+  { title:"Wunsch vier",  text:"Platzhalter: kurze Beschreibung.", detail:"", link:"" },
+  { title:"Wunsch fünf",  text:"Platzhalter: kurze Beschreibung.", detail:"", link:"" },
+  { title:"Wunsch sechs", text:"Platzhalter: kurze Beschreibung.", detail:"", link:"" }
 ];
 const PAPERS = [
   ["#8e2b2b","#e3c98d"], ["#1f4d3c","#e9dfc8"], ["#e9dfc8","#8e2b2b"],
@@ -157,7 +162,6 @@ function show(i){
   document.getElementById("cTitle").textContent = g.title;
   document.getElementById("cText").textContent = g.text;
   const meta = document.getElementById("cMeta"); meta.innerHTML = "";
-  if (g.price)  meta.insertAdjacentHTML("beforeend", `<div>Preisrahmen: <b></b></div>`), meta.lastChild.querySelector("b").textContent = g.price;
   if (g.detail) meta.insertAdjacentHTML("beforeend", `<div><b></b></div>`), meta.lastChild.querySelector("b").textContent = g.detail;
   const a = document.getElementById("cLink");
   if (g.link){ a.href = g.link; a.style.display = "inline-block"; } else a.style.display = "none";
