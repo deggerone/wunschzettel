@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pauls Wunschzettel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#0e2620; --night2:#13342b; --cream:#f4ecdc; --muted:#b9c2b8;
+    --gold:#c9a45c; --gold2:#e3c98d; --red:#8e2b2b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{
+    background:radial-gradient(ellipse at top, #1a4436 0%, var(--night) 55%, #0a1c17 100%) fixed;
+    color:var(--cream); font-family:Inter,system-ui,sans-serif; line-height:1.5;
+    -webkit-tap-highlight-color:transparent;
+  }
+  #snow{position:fixed;inset:0;pointer-events:none;z-index:0}
+  main{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:56px 20px 64px;text-align:center}
+  .star{width:34px;height:34px;margin:0 auto 18px;color:var(--gold)}
+  h1{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(2.4rem,7vw,3.6rem);letter-spacing:.01em;line-height:1.05}
+  h1 em{color:var(--gold2);font-style:italic}
+  .sub{color:var(--muted);margin:14px auto 0;max-width:30em;font-size:.98rem}
+  .rule{width:64px;height:1px;background:var(--gold);margin:28px auto;opacity:.7}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:34px 22px;margin-top:10px}
+  @media (max-width:620px){.grid{grid-template-columns:repeat(2,1fr);gap:30px 16px}}
+
+  .gift{background:none;border:0;color:inherit;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:12px;padding:6px;border-radius:14px}
+  .gift:focus-visible{outline:2px solid var(--gold2);outline-offset:4px}
+  .box{position:relative;width:100%;max-width:170px;aspect-ratio:1/1.02;transition:transform .35s ease}
+  .gift:hover .box{transform:translateY(-4px)}
+  .gift:not(.open):hover .box{animation:wiggle .5s ease}
+  @keyframes wiggle{0%,100%{transform:translateY(-4px) rotate(0)}30%{transform:translateY(-4px) rotate(-3deg)}65%{transform:translateY(-4px) rotate(2deg)}}
+  .base,.lid{position:absolute;left:0;right:0;border-radius:4px}
+  .base{bottom:0;height:72%;background:var(--paper);box-shadow:0 14px 24px -12px rgba(0,0,0,.6), inset 0 -8px 16px rgba(0,0,0,.18)}
+  .lid{top:12%;left:-5%;right:-5%;height:20%;background:var(--paper);filter:brightness(1.08);box-shadow:0 4px 8px rgba(0,0,0,.35);transition:transform .6s cubic-bezier(.3,1.4,.5,1);transform-origin:20% 100%}
+  .base::before,.lid::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:14%;transform:translateX(-50%);background:var(--ribbon)}
+  .base::after{content:"";position:absolute;left:0;right:0;top:38%;height:13%;background:var(--ribbon);opacity:.95}
+  .bow{position:absolute;top:-58%;left:50%;width:70%;height:70%;transform:translateX(-50%);color:var(--ribbon)}
+  .glow{position:absolute;left:10%;right:10%;bottom:40%;height:40%;border-radius:50%;background:radial-gradient(circle,rgba(227,201,141,.85),rgba(227,201,141,0) 70%);opacity:0;transition:opacity .5s .15s}
+  .gift.open .lid{transform:translateY(-38%) rotate(-16deg)}
+  .gift.open .glow{opacity:1}
+  .num{font-family:"Cormorant Garamond",serif;font-size:1.05rem;color:var(--gold2);letter-spacing:.12em}
+  .label{font-size:.9rem;color:var(--muted);min-height:2.6em;max-width:14em}
+  .gift.open .label{color:var(--cream)}
+
+  .actions{margin-top:44px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .btn{background:transparent;border:1px solid rgba(201,164,92,.6);color:var(--gold2);font:500 .9rem Inter,sans-serif;padding:10px 20px;border-radius:999px;cursor:pointer;transition:background .2s}
+  .btn:hover{background:rgba(201,164,92,.12)}
+  footer{margin-top:40px;color:var(--muted);font-size:.82rem;opacity:.8}
+
+  /* Karte */
+  .veil{position:fixed;inset:0;z-index:5;background:rgba(5,14,11,.72);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
+  .veil.show{opacity:1;pointer-events:auto}
+  .card{position:relative;background:var(--cream);color:#2a2620;width:100%;max-width:420px;border-radius:6px;padding:40px 30px 30px;text-align:center;box-shadow:0 30px 60px -20px rgba(0,0,0,.7);transform:translateY(20px) scale(.96);transition:transform .4s cubic-bezier(.3,1.3,.5,1)}
+  .veil.show .card{transform:none}
+  .card::before{content:"";position:absolute;inset:8px;border:1px solid rgba(160,124,58,.45);border-radius:3px;pointer-events:none}
+  .card .cnum{font-family:"Cormorant Garamond",serif;color:#a07c3a;letter-spacing:.2em;font-size:.95rem}
+  .card h2{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:2rem;line-height:1.1;margin:8px 0 14px}
+  .card p{font-size:.97rem;color:#4a443b}
+  .meta{margin-top:18px;display:flex;flex-direction:column;gap:6px;font-size:.88rem;color:#6b6356}
+  .meta b{color:#2a2620;font-weight:500}
+  .card a.link{display:inline-block;margin-top:20px;color:#fff;background:var(--red);text-decoration:none;padding:10px 22px;border-radius:999px;font-size:.9rem}
+  .close{position:absolute;top:14px;right:16px;background:none;border:0;font-size:1.6rem;line-height:1;color:#8a8070;cursor:pointer;padding:4px 8px}
+  .nav{display:flex;justify-content:space-between;margin-top:24px}
+  .nav button{background:none;border:0;color:#a07c3a;font:500 .88rem Inter,sans-serif;cursor:pointer;padding:6px}
+  .nav button:disabled{opacity:.3;cursor:default}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<canvas id="snow" aria-hidden="true"></canvas>
+<main>
+  <svg class="star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.5l2.6 7.1h7.4l-6 4.5 2.3 7.3L12 16l-6.3 4.4L8 13.1 2 8.6h7.4z"/></svg>
+  <h1>Pauls <em>Wunschzettel</em></h1>
+  <p class="sub">Unter dem Baum liegen sechs Päckchen. Tippt eines an, um es auszupacken und zu sehen, was drin steckt.</p>
+  <div class="rule"></div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="actions">
+    <button class="btn" id="openAll">Alle auspacken</button>
+    <button class="btn" id="wrapAll">Wieder einpacken</button>
+  </div>
+  <footer>Frohe Weihnachten 2026</footer>
+</main>
+
+<div class="veil" id="veil" role="dialog" aria-modal="true" aria-labelledby="cTitle">
+  <div class="card">
+    <button class="close" id="close" aria-label="Schließen">×</button>
+    <div class="cnum" id="cNum"></div>
+    <h2 id="cTitle"></h2>
+    <p id="cText"></p>
+    <div class="meta" id="cMeta"></div>
+    <a class="link" id="cLink" target="_blank" rel="noopener">Ansehen</a>
+    <div class="nav"><button id="prev">← Vorheriges</button><button id="next">Nächstes →</button></div>
+  </div>
+</div>
+
+<script>
+/* ===== Hier die sechs Wünsche eintragen ===== */
+const GIFTS = [
+  { title:"Wunsch eins",   text:"Platzhalter: kurze Beschreibung, warum du dir das wünschst.", price:"ca. 30 €",  detail:"Farbe: egal", link:"" },
+  { title:"Wunsch zwei",   text:"Platzhalter: kurze Beschreibung.", price:"ca. 50 €",  detail:"", link:"" },
+  { title:"Wunsch drei",   text:"Platzhalter: kurze Beschreibung.", price:"ca. 20 €",  detail:"Größe: M", link:"" },
+  { title:"Wunsch vier",   text:"Platzhalter: kurze Beschreibung.", price:"ca. 80 €",  detail:"", link:"" },
+  { title:"Wunsch fünf",   text:"Platzhalter: kurze Beschreibung.", price:"ca. 15 €",  detail:"", link:"" },
+  { title:"Wunsch sechs",  text:"Platzhalter: kurze Beschreibung.", price:"",          detail:"", link:"" }
+];
+const PAPERS = [
+  ["#8e2b2b","#e3c98d"], ["#1f4d3c","#e9dfc8"], ["#e9dfc8","#8e2b2b"],
+  ["#22324f","#c9a45c"], ["#b8893f","#f4ecdc"], ["#5b1f2a","#c9a45c"]
+];
+const NUMS = ["I","II","III","IV","V","VI"];
+const KEY = "wunschzettel-geoeffnet";
+
+let opened = new Set();
+try { opened = new Set(JSON.parse(localStorage.getItem(KEY) || "[]")); } catch(e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify([...opened])); } catch(e) {} };
+
+const grid = document.getElementById("grid");
+const bow = '<svg class="bow" viewBox="0 0 100 60" fill="currentColor" aria-hidden="true"><path d="M50 52C38 30 14 18 8 30s16 26 42 22zM50 52C62 30 86 18 92 30S76 56 50 52z"/><circle cx="50" cy="50" r="8"/></svg>';
+
+GIFTS.forEach((g, i) => {
+  const b = document.createElement("button");
+  b.className = "gift";
+  b.style.setProperty("--paper", PAPERS[i][0]);
+  b.style.setProperty("--ribbon", PAPERS[i][1]);
+  b.innerHTML = `<div class="box"><div class="glow"></div><div class="base"></div><div class="lid">${bow}</div></div>
+                 <div class="num">${NUMS[i]}</div><div class="label"></div>`;
+  b.addEventListener("click", () => { const wasOpen = opened.has(i); unwrap(i); setTimeout(() => show(i), wasOpen ? 0 : 550); });
+  grid.appendChild(b);
+});
+const els = [...grid.children];
+
+function render(i){
+  const el = els[i], on = opened.has(i);
+  el.classList.toggle("open", on);
+  el.dataset.was = on ? "1" : "";
+  el.querySelector(".label").textContent = on ? GIFTS[i].title : "Noch eingepackt";
+  el.setAttribute("aria-label", on ? `Geschenk ${i+1}: ${GIFTS[i].title}` : `Geschenk ${i+1} auspacken`);
+}
+function unwrap(i){ opened.add(i); save(); render(i); }
+els.forEach((_, i) => render(i));
+
+/* Karte */
+const veil = document.getElementById("veil");
+let cur = 0;
+function show(i){
+  cur = i; const g = GIFTS[i];
+  document.getElementById("cNum").textContent = "GESCHENK " + NUMS[i];
+  document.getElementById("cTitle").textContent = g.title;
+  document.getElementById("cText").textContent = g.text;
+  const meta = document.getElementById("cMeta"); meta.innerHTML = "";
+  if (g.price)  meta.insertAdjacentHTML("beforeend", `<div>Preisrahmen: <b></b></div>`), meta.lastChild.querySelector("b").textContent = g.price;
+  if (g.detail) meta.insertAdjacentHTML("beforeend", `<div><b></b></div>`), meta.lastChild.querySelector("b").textContent = g.detail;
+  const a = document.getElementById("cLink");
+  if (g.link){ a.href = g.link; a.style.display = "inline-block"; } else a.style.display = "none";
+  document.getElementById("prev").disabled = i === 0;
+  document.getElementById("next").disabled = i === GIFTS.length - 1;
+  veil.classList.add("show");
+  document.getElementById("close").focus();
+}
+function hide(){ veil.classList.remove("show"); els[cur].focus(); }
+document.getElementById("close").onclick = hide;
+veil.addEventListener("click", e => { if (e.target === veil) hide(); });
+document.addEventListener("keydown", e => {
+  if (!veil.classList.contains("show")) return;
+  if (e.key === "Escape") hide();
+  if (e.key === "ArrowRight" && cur < GIFTS.length-1) step(1);
+  if (e.key === "ArrowLeft" && cur > 0) step(-1);
+});
+function step(d){ const n = cur + d; unwrap(n); show(n); }
+document.getElementById("prev").onclick = () => step(-1);
+document.getElementById("next").onclick = () => step(1);
+
+document.getElementById("openAll").onclick = () => GIFTS.forEach((_, i) => setTimeout(() => unwrap(i), i*140));
+document.getElementById("wrapAll").onclick = () => { opened.clear(); save(); els.forEach((_, i) => render(i)); };
+
+/* Leiser Schneefall */
+(function(){
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const c = document.getElementById("snow"), x = c.getContext("2d");
+  let w, h, flakes = [];
+  const resize = () => { w = c.width = innerWidth; h = c.height = innerHeight;
+    flakes = Array.from({length: Math.round(w*h/14000)}, () => ({x:Math.random()*w, y:Math.random()*h, r:Math.random()*1.8+.4, s:Math.random()*.4+.15, d:Math.random()*Math.PI*2})); };
+  resize(); addEventListener("resize", resize);
+  (function tick(){
+    x.clearRect(0,0,w,h); x.fillStyle = "rgba(244,236,220,.7)";
+    for (const f of flakes){
+      f.y += f.s; f.d += .01; f.x += Math.sin(f.d)*.25;
+      if (f.y > h) { f.y = -4; f.x = Math.random()*w; }
+      x.beginPath(); x.arc(f.x, f.y, f.r, 0, 7); x.fill();
+    }
+    requestAnimationFrame(tick);
+  })();
+})();
+</script>
+</body>
+</html>
