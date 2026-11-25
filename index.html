@@ -105,17 +105,26 @@
 <script>
 /* ===== Hier die sechs Wünsche eintragen ===== */
 const GIFTS = [
-  { title:"Ein Schuhschrank für uns",
-    text:"Matine und ich wünschen uns gemeinsam einen Schuhschrank für die Wohnung. Wir haben uns schon einen ausgesucht, über den Link unten kommt ihr direkt zu ihm.",
+  { title:"Ein Wäscheschrank für uns",
+    text:"Matine und ich wünschen uns gemeinsam einen Wäscheschrank für die Wohnung. Wir haben uns schon einen ausgesucht, über den Link unten kommt ihr direkt zu ihm.",
     detail:"Gemeinsames Geschenk für Matine und mich",
-    link:"" /* LINK HIER EINFÜGEN, z. B. "https://..." */ },
+    link:"https://amzn.eu/d/067LGEh5" },
   { title:"Eine Nacht auf Island",
     text:"Ich wünsche mir eine Übernachtung auf Island. Über einen finanziellen Zuschuss eurer Wahl würde ich mich sehr freuen. Als kleiner Anhaltspunkt kann ich sagen, dass man so mit 100–200 € gut bedient ist, je nachdem wie viel Luxus man haben möchte.",
     detail:"", link:"" },
-  { title:"Wunsch drei",  text:"Platzhalter: kurze Beschreibung.", detail:"", link:"" },
-  { title:"Wunsch vier",  text:"Platzhalter: kurze Beschreibung.", detail:"", link:"" },
-  { title:"Wunsch fünf",  text:"Platzhalter: kurze Beschreibung.", detail:"", link:"" },
-  { title:"Wunsch sechs", text:"Platzhalter: kurze Beschreibung.", detail:"", link:"" }
+  { title:"Kontaktloser Spannungsprüfer von Fluke",
+    text:"Der Link dient nur als Beispiel. Papa, du weißt, was da gut ist.",
+    detail:"",
+    link:"https://amzn.eu/d/0hElA967" },
+  { title:"Steak-Sonntag",
+    text:"Ich möchte gerne, bevor Matine nach Island geht, mit euch dreien einen gemütlichen Sonntag mit leckerem Steakessen in der Ulmenstraße verbringen.",
+    detail:"", link:"" },
+  { title:"Gemeinsamer Urlaub",
+    text:"Die Urlaube mit euch beiden gehören zu den schönsten Erinnerungen meiner Kindheit. Vielleicht könnt ihr mich ja mal ein Wochenende nach Rügen, Husum oder so (spielt eigentlich auch keine Rolle) mitnehmen. Dann nehmen wir uns alle Freitag frei und fahren zusammen bis Sonntag weg. Gerne im Zeitraum von März bis Juni.",
+    detail:"", link:"" },
+  { title:"Hochwertiger Schreiber",
+    text:"Lästige, klapprige Kugelschreiber sind Mist. Ich würde mich über einen hochwertigen Kugelschreiber von einem deutschen Unternehmen freuen, preislich so bis 50 €.",
+    detail:"", link:"" }
 ];
 const PAPERS = [
   ["#8e2b2b","#e3c98d"], ["#1f4d3c","#e9dfc8"], ["#e9dfc8","#8e2b2b"],
@@ -160,7 +169,7 @@ function show(i){
   cur = i; const g = GIFTS[i];
   document.getElementById("cNum").textContent = "GESCHENK " + NUMS[i];
   document.getElementById("cTitle").textContent = g.title;
-  document.getElementById("cText").textContent = g.text;
+  const ct = document.getElementById("cText"); ct.textContent = g.text; ct.style.display = g.text ? "" : "none";
   const meta = document.getElementById("cMeta"); meta.innerHTML = "";
   if (g.detail) meta.insertAdjacentHTML("beforeend", `<div><b></b></div>`), meta.lastChild.querySelector("b").textContent = g.detail;
   const a = document.getElementById("cLink");
